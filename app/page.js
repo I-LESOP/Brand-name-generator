@@ -195,3 +195,23 @@ fontWeight:"600"
 }
 
 };
+
+async function generateName(){
+
+const res = await fetch("/api/generate",{
+ method:"POST",
+ headers:{
+  "Content-Type":"application/json"
+ },
+ body: JSON.stringify({
+  businessType,
+  style,
+  keywords
+ })
+});
+
+const data = await res.json();
+
+setResult(data.result);
+
+}
