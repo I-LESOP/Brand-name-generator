@@ -2,114 +2,196 @@
 import { useState } from "react";
 
 export default function Home() {
-  const [brand, setBrand] = useState("");
 
-  const prefixes = [
-    "Neo","Ultra","Nova","Prime","Zen","Alpha","Pixel","Meta",
-    "Aero","Flux","Echo","Vibe","Lumo","Orbit"
-  ];
+const [businessType, setBusinessType] = useState("General Brand");
+const [style, setStyle] = useState("Modern");
+const [keywords, setKeywords] = useState("");
+const [result, setResult] = useState("");
 
-  const suffixes = [
-    "ify","io","ora","lab","verse","works","sy","core",
-    "loop","hub","nova","zone","forge","craft"
-  ];
+const baseWords = [
+"nova","aero","lumo","zen","prime","vibe","flux","orbit",
+"pulse","echo","atlas","pixel","forge","rise","core"
+];
 
-  const endings = [
-    "Labs","Studio","Co","Brand","Collective","Group","Works"
-  ];
+const endings = [
+"labs","co","studio","collective","group","works","brand","supply"
+];
 
-  function generateBrand() {
-    const p = prefixes[Math.floor(Math.random() * prefixes.length)];
-    const s = suffixes[Math.floor(Math.random() * suffixes.length)];
-    const e = endings[Math.floor(Math.random() * endings.length)];
+function generateName(){
 
-    const style = Math.floor(Math.random()*3);
+const word = baseWords[Math.floor(Math.random()*baseWords.length)];
+const ending = endings[Math.floor(Math.random()*endings.length)];
 
-    if(style === 0) setBrand(`${p}${s}`);
-    if(style === 1) setBrand(`${p}${s} ${e}`);
-    if(style === 2) setBrand(`${p}${p.slice(-2)}${s}`);
-  }
+let keywordPart = keywords ? keywords + " " : "";
 
-  return (
-    <main style={styles.main}>
-      <div style={styles.card}>
-        <h1 style={styles.title}>Brand Name Generator</h1>
+let generated = `${keywordPart}${word} ${ending}`;
 
-        <p style={styles.subtitle}>
-          Generate unique startup or clothing brand names instantly
-        </p>
+generated = generated
+.replace(/\b\w/g, l => l.toUpperCase());
 
-        <button onClick={generateBrand} style={styles.button}>
-          Generate Brand
-        </button>
+setResult(generated);
 
-        {brand && (
-          <div style={styles.result}>
-            {brand}
-          </div>
-        )}
-
-        <p style={styles.footer}>
-          Click generate until you find something perfect.
-        </p>
-      </div>
-    </main>
-  );
 }
 
+return (
+
+<main style={styles.page}>
+
+<header style={styles.header}>
+<h1 style={styles.title}>Brand Name Generator</h1>
+</header>
+
+<section style={styles.generator}>
+
+<div style={styles.field}>
+
+<label style={styles.label}>Brand Type</label>
+
+<select
+style={styles.input}
+value={businessType}
+onChange={(e)=>setBusinessType(e.target.value)}
+>
+
+<option>General Brand</option>
+<option>Clothing</option>
+<option>Technology</option>
+<option>Beauty</option>
+<option>Fitness</option>
+<option>Food & Beverage</option>
+<option>Luxury</option>
+<option>Streetwear</option>
+
+</select>
+
+</div>
+
+
+<div style={styles.field}>
+
+<label style={styles.label}>Name Style</label>
+
+<select
+style={styles.input}
+value={style}
+onChange={(e)=>setStyle(e.target.value)}
+>
+
+<option>Modern</option>
+<option>Luxury</option>
+<option>Minimal</option>
+<option>Edgy</option>
+<option>Futuristic</option>
+<option>Playful</option>
+
+</select>
+
+</div>
+
+
+<div style={styles.field}>
+
+<label style={styles.label}>Keywords (Optional)</label>
+
+<input
+style={styles.input}
+type="text"
+placeholder="ex: eco, street, glow"
+value={keywords}
+onChange={(e)=>setKeywords(e.target.value)}
+/>
+
+</div>
+
+
+<button style={styles.button} onClick={generateName}>
+Generate Name
+</button>
+
+
+{result && (
+<div style={styles.result}>
+{result}
+</div>
+)}
+
+</section>
+
+</main>
+
+);
+}
+
+
 const styles = {
-  main:{
-    height:"100vh",
-    display:"flex",
-    justifyContent:"center",
-    alignItems:"center",
-    background:"linear-gradient(135deg,#0f0f0f,#1a1a1a)",
-    color:"white",
-    fontFamily:"system-ui"
-  },
 
-  card:{
-    background:"#1f1f1f",
-    padding:"50px",
-    borderRadius:"14px",
-    textAlign:"center",
-    width:"420px",
-    boxShadow:"0 10px 40px rgba(0,0,0,0.5)"
-  },
+page:{
+background:"#f5f6f7",
+height:"100vh",
+fontFamily:"system-ui",
+display:"flex",
+flexDirection:"column",
+alignItems:"center"
+},
 
-  title:{
-    fontSize:"36px",
-    marginBottom:"10px"
-  },
+header:{
+marginTop:"80px",
+marginBottom:"60px"
+},
 
-  subtitle:{
-    color:"#aaa",
-    marginBottom:"30px"
-  },
+title:{
+fontSize:"42px",
+fontWeight:"500",
+letterSpacing:"1px",
+color:"#111"
+},
 
-  button:{
-    padding:"14px 28px",
-    fontSize:"16px",
-    border:"none",
-    borderRadius:"8px",
-    background:"white",
-    color:"black",
-    cursor:"pointer",
-    marginBottom:"30px"
-  },
+generator:{
+background:"white",
+padding:"40px",
+borderRadius:"12px",
+boxShadow:"0 10px 30px rgba(0,0,0,0.08)",
+width:"420px"
+},
 
-  result:{
-    fontSize:"28px",
-    fontWeight:"bold",
-    padding:"18px",
-    background:"#2a2a2a",
-    borderRadius:"8px",
-    marginTop:"10px"
-  },
+field:{
+display:"flex",
+flexDirection:"column",
+marginBottom:"20px"
+},
 
-  footer:{
-    marginTop:"25px",
-    fontSize:"13px",
-    color:"#666"
-  }
+label:{
+fontSize:"14px",
+marginBottom:"6px",
+color:"#444"
+},
+
+input:{
+padding:"12px",
+borderRadius:"8px",
+border:"1px solid #ddd",
+fontSize:"14px"
+},
+
+button:{
+marginTop:"10px",
+padding:"14px",
+border:"none",
+borderRadius:"8px",
+background:"#111",
+color:"white",
+fontSize:"15px",
+cursor:"pointer"
+},
+
+result:{
+marginTop:"25px",
+padding:"16px",
+background:"#f2f2f2",
+borderRadius:"8px",
+fontSize:"20px",
+textAlign:"center",
+fontWeight:"600"
+}
+
 };
