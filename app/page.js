@@ -7,15 +7,22 @@ export default function Home() {
   const [keywords, setKeywords] = useState("");
   const [result, setResult] = useState("");
 
-  async function generateAIName() {
-    const res = await fetch("/api/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ businessType, style, keywords })
-    });
+  async function handleGenerate() {
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ businessType, style, keywords }),
+      });
 
-    const data = await res.json();
-    setResult(data.result);
+      if (!res.ok) throw new Error("Failed to generate");
+
+      const data = await res.json();
+      setResult(data.result);
+    } catch (err) {
+      setResult("Error generating name. Try again.");
+      console.error(err);
+    }
   }
 
   return (
@@ -73,7 +80,7 @@ export default function Home() {
           />
         </div>
 
-        <button style={styles.button} onClick={generateAIName}>
+        <button style={styles.button} onClick={handleGenerate}>
           Generate Name
         </button>
 
@@ -90,7 +97,7 @@ const styles = {
     fontFamily: "system-ui",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   header: { marginTop: "80px", marginBottom: "60px" },
   title: { fontSize: "42px", fontWeight: "500", letterSpacing: "1px", color: "#111" },
@@ -99,7 +106,7 @@ const styles = {
     padding: "40px",
     borderRadius: "12px",
     boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
-    width: "420px"
+    width: "420px",
   },
   field: { display: "flex", flexDirection: "column", marginBottom: "20px" },
   label: { fontSize: "14px", marginBottom: "6px", color: "#444" },
@@ -112,7 +119,7 @@ const styles = {
     background: "#111",
     color: "white",
     fontSize: "15px",
-    cursor: "pointer"
+    cursor: "pointer",
   },
-  result: { marginTop: "25px", padding: "16px", background: "#f2f2f2", borderRadius: "8px", fontSize: "20px", textAlign: "center", fontWeight: "600" }
+  result: { marginTop: "25px", padding: "16px", background: "#f2f2f2", borderRadius: "8px", fontSize: "20px", textAlign: "center", fontWeight: "600" },
 };
