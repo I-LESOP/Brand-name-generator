@@ -104,7 +104,7 @@ onChange={(e)=>setKeywords(e.target.value)}
 </div>
 
 
-<button style={styles.button} onClick={generateName}>
+<button style={styles.button} onClick={generateAIName}>
 Generate Name
 </button>
 
@@ -196,7 +196,7 @@ fontWeight:"600"
 
 };
 
-async function generateName(){
+async function generateAIName(){
 
 const res = await fetch("/api/generate",{
  method:"POST",
